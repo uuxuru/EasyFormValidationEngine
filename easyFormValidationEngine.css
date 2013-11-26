@@ -1,0 +1,32 @@
+ /*
+ * easy Form Validation Engine
+ *
+ *
+ * Copyright(c)2013, Nguyen Van Tuan
+ * https://github.com/uuxuru/EasyFormValidationEngine
+ *
+ * StyleSheet packet
+ * Version: 1.0
+ * 
+ * Licensed under the GNU License
+ *  
+ */
+.easyValidBoxContainner{--display:none;overflow:hidden;opacity:0.87;position:absolute;margin-top:-33px;padding-right:30px;
+	z-index:999999;cursor:pointer;}
+.easyValidBoxMessage{padding-left:10px;padding-right:10px;border:2px solid #ddd;box-shadow:0 2px 3px #444;
+	-moz-box-shadow:0 2px 3px #444;-webkit-box-shadow:0 2px 3px #444;-o-box-shadow:0 2px 3px #444;}	
+.easyGreen{background:#33be40;}
+.easyRed{background:#ee0101;}
+.easyArrow{position:relative;width:15px;margin:-2px 0px 0px 13px;position:relative;}
+.easyArrow .line10{width:15px;margin:0px 0px;}
+.easyArrow .line9 {width:13px;margin:0px 1px;}
+.easyArrow .line8 {width:11px;margin:0px 2px;}
+.easyArrow .line7 {width:9px ;margin:0px 3px;}
+.easyArrow .line6 {width:7px ;margin:0px 4px;}
+.easyArrow .line5 {width:5px ;margin:0px 5px;}
+.easyArrow .line4 {width:3px ;margin:0px 6px;}
+.easyArrow .line3 {width:1px ;margin:0px 7px;}
+.easyArrow .line2 {margin:0px 8px;width:3px;background:#ddd;border:none;}
+.easyArrow .line1 {margin:0px 9px;background:#ddd;width:1px;border:none;}
+.easyArrow > div{border-left:2px solid #ddd;border-right:2px solid #ddd;box-shadow:0 2px 3px #444;-moz-box-shadow:0 2px 3px #444;
+-webkit-box-shadow:0 2px 3px #444;-o-box-shadow:0 2px 3px #444;font-size:0px;height:1px;line-height:0;font-size:0;display:block;}
