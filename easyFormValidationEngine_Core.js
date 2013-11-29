@@ -3,6 +3,7 @@
 * Version: 1.0.0
 *
 * Copyright(c)2013, Nguyen Van Tuan
+* Email: uuxuru@gmail.com
 * https://github.com/uuxuru/EasyFormValidationEngine
 *
 * Form validation engine supported ajax technique
@@ -385,14 +386,14 @@ $(document).ready(function () {
 			if (!res["isMatch"])
 				o.easyPrototype.isValidated = false;
 			return res["isMatch"];
-		},
+		}
 	};
 
 	// userInterface
 	var easySetting;
 	$.fn.easySetting = easySetting = {
 		beforeSubmit : function () {},
-		afterSubmit : function () {},
+		afterSubmit : function () {}
 	};
 	$.fn.validateThisForm = function (o) {
 		return ;

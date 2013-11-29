@@ -3,6 +3,7 @@
  *
  *
  * Copyright(c)2013, Nguyen Van Tuan
+ * Email: uuxuru@gmail.com
  * https : //github.com/uuxuru/EasyFormValidationEngine
  *
  * Function packet
@@ -88,8 +89,8 @@ var promptStyleList = {
 
 				}
 			});
-		},
-	},
+		}
+	}
 };
 function easyFormPrototype() {
 	this.func = {
@@ -101,7 +102,7 @@ function easyFormPrototype() {
 			onTyping : false,
 			onLeave : false,
 			onSubmit : true,
-			when : "beforeSubmit",
+			when : "beforeSubmit"
 		},
 		afterSubmit : {
 			userDefined : false,
@@ -111,7 +112,7 @@ function easyFormPrototype() {
 			onTyping : false,
 			onLeave : false,
 			onSubmit : true,
-			when : "afterSubmit",
+			when : "afterSubmit"
 		},
 		ajax : {
 			userDefined : false,
@@ -121,8 +122,8 @@ function easyFormPrototype() {
 			onTyping : false,
 			onLeave : false,
 			onSubmit : true,
-			when : "beforeSubmit",
-		},
+			when : "beforeSubmit"
+		}
 	};
 
 	//option
@@ -175,11 +176,11 @@ function easyFormPrototype() {
 
 		$.ajaxSetup({
 			async : false,
-			type : $(o).attr("method"),
+			type : $(o).attr("method")
 		});
 		$.ajax({
 			url : url,
-			data : data + 'type=form',
+			data : data + 'type=form'
 		});
 
 		// waiting for ajax response
@@ -204,7 +205,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		onlyNumber : {
 			userDefined : false,
@@ -213,7 +214,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		onlyInteger : {
 			userDefined : false,
@@ -222,7 +223,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		onlyText : {
 			userDefined : false,
@@ -231,7 +232,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		onlyTextAndNumber : {
 			userDefined : false,
@@ -240,7 +241,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		onlyUnicodeLetterNumber : {
 			userDefined : false,
@@ -249,7 +250,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		onlyEmail : {
 			userDefined : false,
@@ -258,7 +259,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		equalWithID : {
 			userDefined : false,
@@ -267,7 +268,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		lagerId : {
 			userDefined : false,
@@ -276,7 +277,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		smallThanId : {
 			userDefined : false,
@@ -285,7 +286,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		dateTimeOnly : {
 			userDefined : false,
@@ -294,7 +295,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		dateOnly : {
 			userDefined : false,
@@ -303,7 +304,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		minSize : {
 			userDefined : false,
@@ -312,7 +313,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		maxSize : {
 			userDefined : false,
@@ -321,7 +322,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		maxDigitvalue : {
 			userDefined : false,
@@ -330,7 +331,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		minDigitvalue : {
 			userDefined : false,
@@ -339,7 +340,7 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : true,
 			onLeave : true,
-			onSubmit : true,
+			onSubmit : true
 		},
 		ajax : {
 			userDefined : false,
@@ -348,8 +349,8 @@ function easyInputPrototype() {
 			message : "",
 			onTyping : false,
 			onLeave : true,
-			onSubmit : false,
-		},
+			onSubmit : false
+		}
 	};
 
 	//option
@@ -636,11 +637,11 @@ function easyInputPrototype() {
 			ret["isMatch"] = true;
 			ret["message"] = "";
 			$.ajaxSetup({
-				type : $(o).closest("form").attr("method"),
+				type : $(o).closest("form").attr("method")
 			});
 			$.ajax({
 				url : url,
-				data : iId + '=' + iValue + "&type=input",
+				data : iId + '=' + iValue + "&type=input"
 			});
 			return ret;
 		}

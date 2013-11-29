@@ -3,6 +3,8 @@
  *
  *
  * Copyright(c)2013, Nguyen Van Tuan
+ * Email: uuxuru@gmail.com
+ * email: uuxuru@gmail.com
  * https://github.com/uuxuru/EasyFormValidationEngine
  *
  * Language packet
@@ -37,5 +39,5 @@ var easyLanguage = {
 	maxSizeError1 : "Maximum ",
 	maxSizeError2 : " character",
 	maxDigitvalue : "Maximum digit value: ",
-	minDigitvalue : "Minimum digit value: ",
+	minDigitvalue : "Minimum digit value: "
 }
