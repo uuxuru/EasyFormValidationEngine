@@ -1,16 +1,96 @@
- /*
+﻿/*
  * easy Form Validation Engine
  *
  *
  * Copyright(c)2013, Nguyen Van Tuan
- * https://github.com/uuxuru/EasyFormValidationEngine
+ * https : //github.com/uuxuru/EasyFormValidationEngine
  *
  * Function packet
- * Version: 1.0
- * 
+ * Version : 1.0
+ *
  * Licensed under the GNU License
- *  
+ *
  */
+
+var promptStyleList = {
+	easyDefault : {
+		name : "easyDefault",
+		position : "",
+		defaultPosition : "topLeft",
+		show : function (inputObject, inputState, promptMessage) {
+			if (inputObject.easyPrototype.promtpPosition != "") {
+				promptStyleList.easyDefault.position = inputObject.easyPrototype.promtpPosition;
+			} else if (typeof($(inputObject).closest("form").get(0).easyPrototype) != "undefined") { // if this form not defined an easy class
+				promptStyleList.easyDefault.position = $(inputObject).closest("form").get(0).easyPrototype.promtpPosition;
+			} else {
+				promptStyleList.easyDefault.position = promptStyleList.easyDefault.defaultPosition;
+			}
+			var redOrGreen = inputState ? "Green" : "Red";
+			var arrow;
+			var containner = '<div class="easyValidBoxContainner ' + inputObject.easyPrototype.easyID + '">';
+			var box = '<div class="easyValidBoxMessage easy' + redOrGreen + '">' + promptMessage + ' </div>';
+
+			var topRefex = /(top)+/;
+			if (promptStyleList.easyDefault.position.match(topRefex) != null) {
+				arrow = '<div class="easyArrow easyTopArrow"><div class="easy' + redOrGreen + ' line10"></div><div class="easy' + redOrGreen + ' line9"></div><div class="easy' + redOrGreen + ' line8"></div><div class="easy' + redOrGreen + ' line7"></div><div class="easy' + redOrGreen + ' line6"></div><div class="easy' + redOrGreen + ' line5"></div><div class="easy' + redOrGreen + ' line4"></div><div class="easy' + redOrGreen + ' line3"></div><div class="easy' + redOrGreen + ' line2"></div><div class="easy' + redOrGreen + ' line1"></div></div>';
+				inputObject.easyPrototype.promptDiv = containner + box + arrow + '</div>';
+			} else {
+				arrow = '<div class="easyArrow easyBottomArrow"><div class="easy' + redOrGreen + ' line1"></div><div class="easy' + redOrGreen + ' line2"></div><div class="easy' + redOrGreen + ' line3"></div><div class="easy' + redOrGreen + ' line4"></div><div class="easy' + redOrGreen + ' line5"></div><div class="easy' + redOrGreen + ' line6"></div><div class="easy' + redOrGreen + ' line7"></div><div class="easy' + redOrGreen + ' line8"></div><div class="easy' + redOrGreen + ' line9"></div><div class="easy' + redOrGreen + ' line10"></div></div>';
+				inputObject.easyPrototype.promptDiv = containner + arrow + box + '</div>';
+			}
+			$("html").append(inputObject.easyPrototype.promptDiv);
+			promptStyleList.easyDefault.orderly();
+
+			return true;
+		},
+		orderly : function () {
+			$("input").not("[type='submit']").each(function () {
+				if (this.easyPrototype.promtpPosition != "") {
+					promptStyleList.easyDefault.position = this.easyPrototype.promtpPosition;
+				} else if (typeof($(this).closest("form").get(0).easyPrototype) != "undefined") {
+					promptStyleList.easyDefault.position = $(this).closest("form").get(0).easyPrototype.promtpPosition;
+				} else {
+					promptStyleList.easyDefault.position = promptStyleList.easyDefault.defaultPosition;
+				}
+				
+				var thiseasyID = this.easyPrototype.easyID;
+				if ($("." + thiseasyID).length > 0) {
+					var thisPrompt = $("." + thiseasyID);
+					var inputLeft = $(this).offset().left;
+					var inputWidth = $(this).width();
+					var inputTop = $(this).offset().top;
+					var inputHeight = $(this).height();
+
+					var promptWidth = thisPrompt.width();
+					var promptHeight = thisPrompt.height();
+
+					var newPromptLeft = 100;
+					var newPromptTop = 100;
+
+					var topRefex = /(top)+/;
+					if (promptStyleList.easyDefault.position.match(topRefex) != null) {
+						newPromptTop = inputTop - promptHeight + 42;
+					} else {
+						newPromptTop = inputTop + promptHeight + 12;
+					}
+
+					var rightRefex = /[a-z0-9]+(Right)+/;
+					if (promptStyleList.easyDefault.position.match(rightRefex) != null) {
+						newPromptLeft = inputLeft + inputWidth - 30;
+					} else {
+						newPromptLeft = inputLeft;
+					}
+
+					thisPrompt.css({
+						"top" : newPromptTop,
+						"left" : newPromptLeft
+					});
+
+				}
+			});
+		},
+	},
+};
 function easyFormPrototype() {
 	this.func = {
 		beforeSubmit : {
@@ -48,7 +128,7 @@ function easyFormPrototype() {
 	//option
 	this.tagName = "form";
 	this.fullClassName = "";
-	this.defaultPromtpPos = "topright"; //or bottom[left,right], beside[left,right]
+	this.promtpPosition = "topRight"; //or bottom[left,right], beside[left,right]
 	this.promptDiv = "";
 	this.easyID = "";
 	this.isValidated = true;
@@ -58,7 +138,7 @@ function easyFormPrototype() {
 
 	//function
 	this.fafterSubmit = function (o) {
-		easySetting.afterSubmit();
+		$(o).easySetting.afterSubmit();
 		var ret = Array();
 		ret["isMatch"] = true;
 		ret["message"] = "";
@@ -66,7 +146,7 @@ function easyFormPrototype() {
 	};
 
 	this.fbeforeSubmit = function (o) {
-		easySetting.beforeSubmit();
+		$(o).easySetting.beforeSubmit();
 		var ret = Array();
 		ret["isMatch"] = true;
 		ret["message"] = "";
@@ -79,7 +159,10 @@ function easyFormPrototype() {
 
 		// colect all input parameter in form // o is form
 		var data = "";
-		$("#" + o.id + " [class*='easyValidate']").each(function () {
+		$(o).find("input").not("[type='submit']").each(function () {
+			// reset last result
+			this.easyPrototype.validateFromServer =true;
+			this.easyPrototype.messageFromServer ="";
 			if (this.id != "") {
 				data += this.id + "=" + this.value + "&";
 			}
@@ -96,7 +179,7 @@ function easyFormPrototype() {
 		});
 		$.ajax({
 			url : url,
-			data : data,
+			data : data + 'type=form',
 		});
 
 		// waiting for ajax response
@@ -258,7 +341,7 @@ function easyInputPrototype() {
 			onLeave : true,
 			onSubmit : true,
 		},
-		ajaxChecking : {
+		ajax : {
 			userDefined : false,
 			validatevalue : "",
 			isValidated : true,
@@ -274,7 +357,7 @@ function easyInputPrototype() {
 	this.preTypingValue = ""; //if preTypingvalue == value: no need to validate
 	this.preValue = ""; //if prevalue == value: no need to validate
 	this.fullClassName = "";
-	this.defaultPromtpPos = "topright"; //or bottom[left,right], beside[left,right]
+	this.promtpPosition = ""; // This variable is set prompt for only an input
 	this.promptDiv = "";
 	this.easyID = "";
 	this.isValidated = true;
@@ -282,6 +365,7 @@ function easyInputPrototype() {
 	this.isAjaxSubmitWaiting = false;
 	this.messageFromServer = ""; // this is message from submit function response
 	this.validateFromServer = true; // this is validate value from submit function response
+	this.promptStyle = "easyArrow";
 
 	//function
 	this.frequired = function (o) {
@@ -509,12 +593,12 @@ function easyInputPrototype() {
 		ret["isMatch"] = false;
 		ret["message"] = "";
 
-		if (o.value <= easyPrototype.func.maxDigitvalue.validatevalue) {
+		if (o.value < parseInt(o.easyPrototype.func.maxDigitvalue.validatevalue)) {
 			ret["isMatch"] = true;
 			ret["message"] = "";
 		} else {
 			ret["isMatch"] = false;
-			ret["message"] = easyLanguage.maxDigitvalue + easyPrototype.func.maxDigitvalue.validatevalue;
+			ret["message"] = easyLanguage.maxDigitvalue + o.easyPrototype.func.maxDigitvalue.validatevalue;
 		}
 		return ret;
 	};
@@ -524,17 +608,17 @@ function easyInputPrototype() {
 		ret["isMatch"] = false;
 		ret["message"] = "";
 
-		if (o.value >= easyPrototype.func.minDigitvalue.validatevalue) {
+		if (o.value > parseInt(o.easyPrototype.func.minDigitvalue.validatevalue)) {
 			ret["isMatch"] = true;
 			ret["message"] = "";
 		} else {
 			ret["isMatch"] = false;
-			ret["message"] = easyLanguage.minDigitvalue + easyPrototype.func.minDigitvalue.validatevalue;
+			ret["message"] = easyLanguage.minDigitvalue + o.easyPrototype.func.minDigitvalue.validatevalue;
 		}
 		return ret;
 	};
 
-	this.fajaxChecking = function (o) {
+	this.fajax = function (o) {
 		if (!o.easyPrototype.isValidated) {
 			var ret = Array();
 			ret["isMatch"] = true;
@@ -545,22 +629,18 @@ function easyInputPrototype() {
 
 		var tagName = o.tagName;
 		if (tagName.toLowerCase() == "input") {
-
-			var Iname = o.name;
-			var Ivalue = o.value;
-
+			var iId = o.id;
+			var iValue = o.value;
 			var url = $(o).closest("form").attr("action");
-
 			var ret = Array();
 			ret["isMatch"] = true;
 			ret["message"] = "";
-
 			$.ajaxSetup({
 				type : $(o).closest("form").attr("method"),
 			});
 			$.ajax({
 				url : url,
-				data : Iname + '=' + Ivalue + "&type=input",
+				data : iId + '=' + iValue + "&type=input",
 			});
 			return ret;
 		}

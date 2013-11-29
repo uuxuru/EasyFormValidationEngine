@@ -1,0 +1,10 @@
+.content{}
+.content {margin-left:10px;}
+.row1{width:600px;clear:both;margin-top:15px;}
+.row1 > input{float:right;width:300px;}
+.row1 > button{float:right;width:200px;}
+.row1 > .label{float:right; margin-right:10px;}
+.row2{clear:both;margin-left:300px;}
+.dropFloat{clear:both;}
+.marginL60px{margin-left:60px;}
+.marginL30{margin-left:30px;}

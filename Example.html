@@ -1,0 +1,243 @@
+﻿<html>
+    <head>
+        <meta name="generator"
+        content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+        <title>LVE Example</title>
+        <script type="text/javascript" src="jquery182.js"></script>
+        <script type="text/javascript" src="easyFormValidationEngine_Language_En.js"></script>
+        <script type="text/javascript" src="easyFormValidationEngine_Func.js"></script>
+        <script type="text/javascript" src="easyFormValidationEngine_Core.js"></script>
+        <script type="text/javascript" src="example.js"></script>
+        <link type="text/css" rel="stylesheet" href="easyFormValidationEngine.css" />
+        <link type="text/css" rel="stylesheet" href="Example.css" />
+    </head>
+    <body>
+        <center>
+            <h2>easy Validation Engine Example</h2>
+        </center>
+        <center>
+            <h4>Version 1.0</h4>
+        </center>
+        <h4>1. Example for some basic functions:</h4>
+        <div class="content">
+            <div class="marginL60px">
+                <form action="Example.php" method="post" id="a">
+                    <div class="row1">
+                        <input id="a1" class="easyValidate[required()]" />
+                        <div class="label">required:</div>
+                    </div>
+                    <div class="row2">&lt;input id=&quot;a1&quot; class=&quot;easyValidate[required()]&quot; &gt;</div>
+                    <div class="row1">
+                        <input id="a2" class="easyValidate[onlyNumber()]" />
+                        <div class="label">onlyNumber:</div>
+                    </div>
+                    <div class="row2">&lt;input id=&quot;a2&quot; class=&quot;easyValidate[onlyNumber()]&quot; &gt;</div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="row1">
+                        <div class="">The same way to use other functions:
+                        <br /></div>
+                    </div>
+                    <div class="">
+                    <br />onlyInteger()
+                    <br />onlyText()
+                    <br />onlyTextAndNumber()
+                    <br />onlyUnicodeLetterNumber()
+                    <br />onlyEmail()
+                    <br />equalWithID()
+                    <br />lagerId()
+                    <br />smallThanId()
+                    <br />dateTimeOnly()
+                    <br />dateOnly()
+                    <br />minSize()
+                    <br />maxSize()
+                    <br />maxDigitvalue()
+                    <br />minDigitvalue()</div>
+                </form>
+            </div>
+            <div class="dropFloat"></div>
+            <h4 class="dropFloat">2. Validation using ajax:</h4>
+            <h4 class="dropFloat">2.1 Input object:</h4>
+            <div class="marginL60px">
+                <form action="example.php" method="post" id="b">
+                    <div class="row1">
+                        <input id="b1" class="easyValidate[ajax()]" />
+                        <div class="label">Your name (only &quot;easy&quot; accepted):</div>
+                    </div>
+                    <div class="row2">&lt;input id=&quot;aa1&quot; class=&quot;easyValidate[ajax()]&quot; &gt;</div>
+                    <br />
+                    <br />
+                    <div class="dropFloat">
+                        <div class="label">Please refer Example.php to know how the server response.
+                        <br /></div>
+                    </div>
+                </form>
+            </div>
+            <div class="dropFloat"></div>
+            <h4 class="dropFloat">2.2 Form object:</h4>
+            <div class="marginL60px">
+                <div>If you apply ajax validate into a form, it&#39;s mean all data will be collect and send to server to check all
+                of them one more time before do submit.</div>
+                <br />
+                <form action="example.php" method="post" id="c" class="easyValidate[ajax(),promtpPosition:topLeft,scroll:0]">
+                    <div>
+                        <div>Here&#39;s an example:</div>
+                    </div>
+                    <br />
+                    <div class="row1">
+                        <input id="c1" />
+                        <div class="label">name (only &quot;tuan&quot; accepted):</div>
+                    </div>
+                    <div class="row2"></div>
+                    <div class="row1">
+                        <input id="c2" />
+                        <div class="label">how (only &quot;handsome&quot; accepted):</div>
+                    </div>
+                    <div class="row2"></div>
+                    <input class="row2" type="submit" value="submit" />
+                </form>
+                <div class="row2">Form&#39;s code: &lt;form action=&quot;example.php&quot; method=&quot;post&quot; id=&quot;c&quot;
+                class=&quot;easyValidate[ajax(),promtpPosition:topLeft,scroll:0]&quot;&gt;</div>
+            </div>
+            <div class="dropFloat"></div>
+            <h4 class="dropFloat">3. Custome some default settings:</h4>
+            <h4>3.1 do something before submit and after submit:</h4>
+            <div class="marginL60px">As default, after submit button being clicked, the form will be validate one more again and
+            submit to server when validation completed as true. But you can meddle to this process by use function beforeSubmit and
+            afterSubmit. Easy provide you 2 function &quot;beforeSubmit()&quot; and &quot;afterSubmit()&quot; to do some thing
+            before and after form get submitted.
+            <br />
+            <br />Example:
+            <br />
+            <br />
+            <form action="example.php" method="post" id="d" class="easyValidate[ajax(),beforeSubmit(),afterSubmit()]">
+                <div class="row1">
+                    <input id="d1" />
+                    <div class="label">name (only &quot;easy&quot; accepted):</div>
+                </div>
+                <div class="row2"></div>
+                <div class="row2"></div>
+                <div class="row1">
+                    <input id="d2" class="easyValidate[onlyEmail()]" />
+                    <div class="label">email :</div>
+                </div>
+                <input class="row2" type="submit" value="submit" />
+            </form>
+            <br />
+            <b>form:</b> &lt;form action=&quot;example.php&quot; method=&quot;post&quot; id=&quot;form2&quot;
+            class=&quot;easyValidate[ajax(),beforeSubmit(),aftersubmit()]&quot;&gt;
+            <br />
+            <br />
+            <b>JS code:</b>
+            <pre>
+        jQuery(document).ready(function () {
+                $(#formID1).easySetting.beforeSubmit = function () {
+                        if ($(#formID1).isFormValidated())
+                                alert(&quot;hello, this is alert before form submit&quot;);
+                };
+                $(#formID1).easySetting.afterSubmit = function () {
+                                alert(&quot;hello, this is alert after form submitted, the result of form after validate is
+&quot;+$(&quot;#d&quot;).isFormValidated());
+                };
+        });
+
+        
+</pre></div>
+            <h4>3.2 disable auto submit:</h4>
+            <div class="marginL60px">
+            <form action="example.php" method="post" id="e" class="easyValidate[beforeSubmit(),doNotAutoSubmit:true]">
+                <div class="row1">
+                    <input id="e1" />
+                    <div class="label">name (only &quot;easy&quot; accepted):</div>
+                </div>
+                <div class="row2"></div>
+                <div class="row2"></div>
+                <div class="row1">
+                    <input id="e2" class="easyValidate[onlyEmail()]" />
+                    <div class="label">email :</div>
+                </div>
+                <input class="row2" type="submit" value="submit" />
+            </form>
+            <br />
+            <b>form:</b> &lt;form action=&quot;example.php&quot; method=&quot;post&quot; id=&quot;e&quot;
+            class=&quot;easyValidate[beforeSubmit(),doNotAutoSubmit:true]&quot;&gt;</div>
+            <h4>3.4 Enable/disable auto scroll:</h4>
+            <div class="marginL60px">set 
+            <b>scroll:0</b> to disable scroll and 
+            <b>scroll:1</b> to enable scroll
+            <br />
+            <br />
+            <b>Example:</b> &lt;form action=&quot;example.php&quot; method=&quot;post&quot; id=&quot;e&quot;
+            class=&quot;easyValidate[beforeSubmit(),scroll:false]&quot;&gt;</div>
+            <h4>3.3 Choose promtps position:</h4>
+            <div class="marginL60px">Set variable 
+            <b>promtpPosition</b> to form or input to change prompt position.
+            <div class="row1">
+                <input id="a1" class="easyValidate[required(),promtpPosition:topLeft]" />
+                <div class="label">required:</div>
+            </div>
+            <div class="row2">&lt;input id=&quot;a1&quot; class=&quot;easyValidate[required(),promtpPosition:topLeft]&quot;
+            &gt;</div>
+            <div class="dropFloat"></div>
+            <div class="row1">
+                <input id="a1" class="easyValidate[required(),promtpPosition:topRight]" />
+                <div class="label">required:</div>
+            </div>
+            <div class="row2">&lt;input id=&quot;a1&quot; class=&quot;easyValidate[required(),promtpPosition:topRight]&quot;
+            &gt;</div>
+            <div class="dropFloat"></div>
+            <div class="row1">
+                <input id="a1" class="easyValidate[required(),promtpPosition:bottomLeft]" />
+                <div class="label">required:</div>
+            </div>
+            <div class="row2">&lt;input id=&quot;a1&quot; class=&quot;easyValidate[required(),promtpPosition:bottomLeft]&quot;
+            &gt;</div>
+            <div class="dropFloat"></div>
+            <div class="row1">
+                <input id="a1" class="easyValidate[required(),promtpPosition:bottomRight]" />
+                <div class="label">required:</div>
+            </div>
+            <div class="row2">&lt;input id=&quot;a1&quot; class=&quot;easyValidate[required(),promtpPosition:bottomRight]&quot;
+            &gt;</div></div>
+            <div class="dropFloat"></div>
+            <h4 class="dropFloat">4. Additional functions:</h4>
+            <div class="marginL60px">
+                <div class="dropFloat"></div>
+				Get form validate result: isFormValidated. <br><br>
+				Show/hide prompts:<br>
+				<div class="marginL30">
+					hideThisInputValidatePopup<br>
+					showThisInputValidatePopup<br>
+					showAllValidatePopup<br>
+					hideAllValidatePopup<br><br>
+				</div>
+				</br>
+				<b>Example:</b>
+				 <div class="row1">
+					<input id="f1" class="easyValidate[required(),promtpPosition:topLeft]" />
+					<div class="label">required:</div>
+					<div class="dropFloat"></div></br>
+					<input id="f2" class="easyValidate[required(),promtpPosition:topRight]" />
+					<div class="label">required:</div>
+					<div class="dropFloat"></div></br>
+				</div>
+				<div class="row2">
+					<button id="button1">hide first's prompt</button>
+					<button id="button2">show first's prompt</button>
+					<button id="button3">hide all prompt</button>
+					<button id="button4">show all prompt</button>
+				</div>
+                <div class="dropFloat"></div>
+				
+                <br />
+                <br />
+                <br />
+            </div>
+            <center>
+                <h2>End</h2>
+            </center>
+        </div>
+    </body>
+</html>

@@ -1,14 +1,15 @@
-﻿ /*
- * easy Form Validation Engine
- * Version: 1.0.0 
- *
- * Copyright(c)2013, Nguyen Van Tuan
- * https://github.com/uuxuru/EasyFormValidationEngine
- *
- * Form validation engine supported ajax technique
- * Licensed under the GNU License
- *  
- */
+﻿/*
+* easy Form Validation Engine
+* Version: 1.0.0
+*
+* Copyright(c)2013, Nguyen Van Tuan
+* https://github.com/uuxuru/EasyFormValidationEngine
+*
+* Form validation engine supported ajax technique
+*
+* Licensed under the GNU License
+*
+*/
 
 $(document).ready(function () {
 	"use strict";
@@ -18,37 +19,42 @@ $(document).ready(function () {
 			return;
 		var inputRegex = /\["[\w\W]+"\]/;
 		var formRegex = /\[\["[\w\W]+"\]\]/;
-		
+
 		// Check if this ajax response is for easyValidate
 		// This is processor for a form submit
 		if (xhr.responseText.match(formRegex)) {
 			var data = $.parseJSON(xhr.responseText);
-			var isFormValid=true;
-			for(var i=0;i<data.length;i++)
-			{
-				$("#"+data[i][0]).get(0).easyPrototype.validateFromServer = data[i][1];
-				$("#"+data[i][0]).get(0).easyPrototype.messageFromServer = data[i][2];
-				isFormValid=isFormValid&&data[i][1];
+			var isFormValid = true;
+			var o;
+			for (var i = 0; i < data.length; i++) {
+				if($("#" + data[i][0]).length < 1) {
+					continue;// this input is not exist
+				}
+				$("#" + data[i][0]).get(0).easyPrototype.validateFromServer = data[i][1];
+				$("#" + data[i][0]).get(0).easyPrototype.messageFromServer = data[i][2];
+				isFormValid = isFormValid && data[i][1];
+				o = $("#" + data[i][0]).closest("form").get(0);
+				//alert($("#" + data[i][0]).get(0).id+" - "+$("#" + data[i][0]).get(0).easyPrototype.messageFromServer);
 			}
-			var o = $("#"+data[0][0]).closest("form").get(0);
 			o.easyPrototype.isValidated = isFormValid;
-			o.easyPrototype.isAjaxSubmitWaiting=false;
+			o.easyPrototype.isAjaxSubmitWaiting = false;
 		}
 
 		// This is processor for an input submit only
 		else if (xhr.responseText.match(inputRegex)) {
 			var data = $.parseJSON(xhr.responseText);
-			
+
 			var thisIdClass = $("#" + data[0]).get(0).easyPrototype.easyID;
 
-			$("#" + data[0]).get(0).easyPrototype.func.ajaxChecking["isValidated"] = data[1];
-			$("#" + data[0]).get(0).easyPrototype.func.ajaxChecking["message"] = data[2];
+			$("#" + data[0]).get(0).easyPrototype.func.ajax["isValidated"] = data[1];
+			$("#" + data[0]).get(0).easyPrototype.func.ajax["message"] = data[2];
 			$("#" + data[0]).get(0).easyPrototype.isAjaxSubmitWaiting = false;
-			if(!data[1]) $("#" + data[0]).get(0).easyPrototype.isValidated=false;
+			if (!data[1])
+				$("#" + data[0]).get(0).easyPrototype.isValidated = false;
 			easyMethods.showPrompt($("#" + data[0]).get(0));
 		}
 	});
-	
+
 	var easyMethods = {
 		/*
 		 *
@@ -60,15 +66,32 @@ $(document).ready(function () {
 		attackEvent : function () {
 			var inputID = 0;
 			$("[class*='easyValidate']").each(function () {
+				if(this.id == "") {
+					alert(easyLanguage.requestIDerror);
+					return false;
+				}
 				if (this.tagName == "FORM") {
 					this.easyPrototype = new easyFormPrototype();
+					$(this).find("input").not("[class*='easyValidate']").not("[type='submit']").each(function () {
+						if(this.id == "") {
+							alert(easyLanguage.requestIDerror+"\n\n"+easyLanguage.requestIDerror2+$(this).closest("form").get(0).id);
+							return false;
+						}
+						this.easyPrototype = new easyInputPrototype();
+						this.easyPrototype.easyID = "easyID" + inputID++;
+						easyMethods.getClassNameAndItsParameter(this);
+
+					});
+					easyMethods.getClassNameAndItsParameter(this);
+					this.easyPrototype.easyID = "easyID" + inputID++;
+					easyMethods.onSubmit(this);
+					return;
 				} else {
 					this.easyPrototype = new easyInputPrototype();
 				}
 				easyMethods.getClassNameAndItsParameter(this);
 
 				this.easyPrototype.easyID = "easyID" + inputID++;
-
 				easyMethods.onMouseClick(this);
 				easyMethods.onTyping(this);
 				easyMethods.onLeave(this);
@@ -80,7 +103,7 @@ $(document).ready(function () {
 
 			});
 		},
-		
+
 		getSStillMeetChar : function (s, st, n, c) {
 			var sReturn = "";
 
@@ -175,7 +198,7 @@ $(document).ready(function () {
 				}
 			}
 		},
-		
+
 		testingGetAttr : function (object) {
 			for (var i in object) {
 				alert(i + " - " + object[i] + ";;;");
@@ -191,12 +214,13 @@ $(document).ready(function () {
 		 */
 		onTyping : function (o) {
 			$(o).live("keyup", function () {
-				if(o.value == o.easyPrototype.preTypingValue) return;
+				if (o.value == o.easyPrototype.preTypingValue)
+					return;
 				o.easyPrototype.preTypingValue = o.value;
 
 				// Attemp this input is validted
-				o.easyPrototype.isValidated=true;
-				
+				o.easyPrototype.isValidated = true;
+
 				for (var s in o.easyPrototype.func) {
 					o.easyPrototype.func[s].message = "";
 					if ((o.easyPrototype.func[s].onTyping == true) && (o.easyPrototype.func[s].userDefined == true)) {
@@ -209,11 +233,12 @@ $(document).ready(function () {
 
 		onLeave : function (o) {
 			$(o).live("focusout", function (e) {
-				if(o.value == o.easyPrototype.preValue && o.value!="" && o.easyPrototype.isValidated == true) return;
+				if (o.value == o.easyPrototype.preValue && o.value != "" && o.easyPrototype.isValidated == true)
+					return;
 				o.easyPrototype.preValue = o.value;
 
 				// Attemp this input is validted
-				o.easyPrototype.isValidated=true;
+				o.easyPrototype.isValidated = true;
 
 				for (var s in o.easyPrototype.func) {
 					o.easyPrototype.func[s].message = "";
@@ -229,52 +254,64 @@ $(document).ready(function () {
 			// o now form
 			$(o).live("submit", function (e) {
 				// check if form validated before call ajax and submits functions
-				$("#"+o.id + " [class*='easyValidate']").each(function () {
+				// reset last valid result
+				o.easyPrototype.isValidated=true;
+				
+				$("#" + o.id + " [class*='easyValidate']").each(function () {
 					o.easyPrototype.isValidated = o.easyPrototype.isValidated && this.easyPrototype.isValidated
 				});
-				
-				if(o.easyPrototype.isValidated){
+				if (o.easyPrototype.isValidated) {
 					// Do before Submit functions
-					var afterSubmitFuncList=Array();
-					var i=0;
+					var afterSubmitFuncList = Array();
+					var i = 0;
 					for (var s in o.easyPrototype.func) {
-						if ((o.easyPrototype.func[s].onSubmit == true) && (o.easyPrototype.func[s].userDefined == true) ) {
+						if ((o.easyPrototype.func[s].onSubmit == true) && (o.easyPrototype.func[s].userDefined == true)) {
 							var fun = "f" + s;
-							if(o.easyPrototype.func[s].when == "beforeSubmit")
+							if (o.easyPrototype.func[s].when == "beforeSubmit")
 								o.easyPrototype[fun](o);
-							else afterSubmitFuncList[i++]=o.easyPrototype[fun];
+							else
+								afterSubmitFuncList[i++] = o.easyPrototype[fun];
 						}
 					}
-					
+
 					// process false message from server if exist via ajax
-					$("#"+o.id + " [class*='easyValidate']").each(function () {
-						if(!this.easyPrototype.validateFromServer){
-							easyMethods.showPrompt(this,true);
-						}
+					$(o).find("input").not("[type='submit']").each(function () {
+						//if (!this.easyPrototype.validateFromServer) {
+							easyMethods.showPrompt(this);
+						//}
 					});
 					// Do after Submit functions
-					for(var j=0;j<i;j++) afterSubmitFuncList[j](o);
-				}else{
-					easyMethods.scrollToFirstWrongInput();
+					if (o.easyPrototype.doNotAutoSubmit!="true"){
+						for (var j = 0; j < i; j++)
+							afterSubmitFuncList[j](o);
+					}
+				} else {
+					easyMethods.scrollToFirstWrongInput(o);
 					return false;
 				}
-				
+
 				// If user want to do their submit function: stop submit via easy
-				if(o.easyPrototype.doNotAutoSubmit) return false;
-				else return true;
+				if (o.easyPrototype.doNotAutoSubmit=="true" || o.easyPrototype.isValidated == false){
+					return false;
+				}
+				else{
+					return true;
+				}
 			});
 		},
-		
-		scrollToFirstWrongInput : function () {
+
+		scrollToFirstWrongInput : function (o) {
+			// o is form
 			var first = true;
-			$("[class*='easyValidate']").each(function () {
-				if (!this.easyPrototype.isValidated|| !this.easyPrototype.haveMessageFromServer) {
+			$(o).find("[class*='easyValidate']").each(function () {
+				if (!this.easyPrototype.isValidated) {
 					var pos = $(this).position().top - 30;
 					if (first) {
 						first = false;
-						$('body,html').animate({
-							scrollTop : pos
-						}, 1000, function () {});
+						if(o.easyPrototype.scroll == true){
+							$('body,html').animate({scrollTop : pos}, 1000, function () {});
+						}
+						$("html").children("." + this.easyPrototype.easyID).fadeOut(50).fadeIn(100).fadeOut(50).fadeIn(200);
 					}
 					return;
 				}
@@ -284,7 +321,7 @@ $(document).ready(function () {
 		showPrompt : function (o) {
 			// Remove all message before on this input
 			$("html").children("." + o.easyPrototype.easyID).remove();
-		
+
 			// If there have message sent from server: just show that message
 			// If this input is waiting for a response from server: show waiting message
 			// If state false, just show wrong message
@@ -293,83 +330,53 @@ $(document).ready(function () {
 			var state = o.easyPrototype.isValidated;
 			var messages = "";
 			var nullRegex = /[\S]/;
-			if(o.easyPrototype.isAjaxSubmitWaiting){
-				messages = o.easyPrototype.ajaxWattingMessage;
+			if(!o.easyPrototype.validateFromServer){
+				state= false;
+				messages = o.easyPrototype.messageFromServer;
 			}
-			else if(o.easyPrototype.messageFromServer){
-				messages = o.easyPrototype.messageFromServer; 
-			}else{
-				if(!state){
+			else if (o.easyPrototype.isAjaxSubmitWaiting) {
+				messages = o.easyPrototype.ajaxWattingMessage;
+			} else if (o.easyPrototype.messageFromServer) {
+				messages = o.easyPrototype.messageFromServer;
+			} else {
+				if (!state) {
 					for (var s in o.easyPrototype.func) {
-						if(o.easyPrototype.func[s].message!="")
-						if (o.easyPrototype.func[s].userDefined && 
-							!o.easyPrototype.func[s].isValidated && 
-							o.easyPrototype.func[s].message.match(nullRegex) != null){
-							
-							messages += "* " + o.easyPrototype.func[s].message + " </br>";
-						}
+						if (o.easyPrototype.func[s].message != "")
+							if (o.easyPrototype.func[s].userDefined &&
+								!o.easyPrototype.func[s].isValidated &&
+								o.easyPrototype.func[s].message.match(nullRegex) != null) {
+
+								messages += "* " + o.easyPrototype.func[s].message + " </br>";
+							}
 					}
-				}else{
+				} else {
 					for (var s in o.easyPrototype.func) {
 						if (o.easyPrototype.func[s].userDefined &&
-							o.easyPrototype.func[s].message.match(nullRegex) != null){
-							
+							o.easyPrototype.func[s].message.match(nullRegex) != null) {
+
 							messages += "* " + o.easyPrototype.func[s].message + " </br>";
 						}
 					}
 				}
 			}
-			
+
 			// Show message
 			// If message null, don't show it
-			if(messages.match(nullRegex) == null) return;
-			
-			var left = $(o).offset().left;
-			var width = $(o).width();
-			var a = (width + left - 40);
-			var top = $(o).offset().top + 10;
-			var redOrGreen = state?"Green":"Red";
-			
-			if (o.easyPrototype.defaultPromtpPos == "topright") {
-				o.easyPrototype.promptDiv = '<div class="easyValidBoxContainner ' + 
-					o.easyPrototype.easyID + '" style="top:' + top + 
-					'px; left:' + a + 
-					'px;"><div class="easyValidBoxMessage easy'+redOrGreen+'">' + 	messages +
-					' </div><div class="easyArrow"><div class="easy'+redOrGreen+' line10"></div><div class="easy'+redOrGreen+' line9"></div><div class="easy'+redOrGreen+' line8"></div><div class="easy'+redOrGreen+' line7"></div><div class="easy'+redOrGreen+' line6"></div><div class="easy'+redOrGreen+' line5"></div><div class="easy'+redOrGreen+' line4"></div><div class="easy'+redOrGreen+' line3"></div><div class="easy'+redOrGreen+' line2"></div><div class="easy'+redOrGreen+' line1"></div></div></div>';
-			}
-			$("html").append(o.easyPrototype.promptDiv);
-			easyMethods.orderlyPrompts();
+			if(messages =="") return;
+			if (messages.match(nullRegex) == null)
+				return;
+			// do function showpromt
+			easyMethods.prompt.show(o, state, messages);
+
 		},
 
-		orderlyPrompts: function(){
-			$("[class*='easyValidate']").each(function () {
-				var thiseasyID = this.easyPrototype.easyID;
-				if($("."+thiseasyID).length > 0){
-					var thisPrompt = 	$("."+thiseasyID);
-					
-					var inputLeft =		$(this).offset().left;
-					var inputWidth = 	$(this).width();
-					var inputTop = 		$(this).offset().top;
-					var inputHeight = 	$(this).height();
-					
-					var oldPromptLeft = 	thisPrompt.offset().left;
-					var oldPromptWidth = 	thisPrompt.width();
-					var oldPromptTop = 		thisPrompt.offset().top;
-					var oldPromptHeight = 	thisPrompt.height();
-					
-					var newPromptLeft = 	inputLeft+inputWidth-20;
-					var newPromptTop = 		inputTop-oldPromptHeight+42;
-					
-					thisPrompt.css({"top":newPromptTop,"left":newPromptLeft});
-				}
-			});
-		},
-			
+		prompt : promptStyleList.easyDefault,
+
 		validateThisInput : function (o, field) {
 			// Erase all last validation result
 			o.easyPrototype.func[field].isValidated = true;
 			o.easyPrototype.func[field].message = "";
-			
+
 			var fun = "f" + field;
 			//alert(fun);
 			var res = o.easyPrototype[fun](o);
@@ -380,22 +387,23 @@ $(document).ready(function () {
 			return res["isMatch"];
 		},
 	};
-		
+
 	// userInterface
 	var easySetting;
 	$.fn.easySetting = easySetting = {
-		beforeSubmit: function(){
-		},
-		afterSubmit: function(){
-		},
+		beforeSubmit : function () {},
+		afterSubmit : function () {},
 	};
 	$.fn.validateThisForm = function (o) {
-		return r;
+		return ;
 	};
 	$.fn.hideThisInputValidatePopup = function (option) {
-	
+		$("."+this.get(0).easyPrototype.easyID).fadeOut();
 	};
-	$.fn.isFormValidated = function(){
+	$.fn.showThisInputValidatePopup = function (option) {
+		$("."+this.get(0).easyPrototype.easyID).fadeIn();
+	};
+	$.fn.isFormValidated = function () {
 		//easyMethods.testingGetAttr(this);
 		return this.get(0).easyPrototype.isValidated;
 	};
@@ -407,5 +415,3 @@ $(document).ready(function () {
 	};
 	easyMethods.init();
 });
-
-	
