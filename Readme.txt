@@ -3,7 +3,7 @@
  * Version 1.0
  *
  * Copyright(c)2013, Nguyen Van Tuan
- * http  //www.github.com/easyFormValidationEngine
+ * https://github.com/uuxuru/EasyFormValidationEngine
  *  
  */
  
