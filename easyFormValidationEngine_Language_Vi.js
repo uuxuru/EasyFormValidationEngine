@@ -1,4 +1,4 @@
-﻿ /*
+ /*
  * easy Form Validation Engine
  *
  *
@@ -14,6 +14,8 @@
  *  
  */
 var easyLanguage = {
+	requestIDerror: "Lỗi, Easy validation Engine đòi hỏi input phải có ID",
+	requestIDerror2: "Input này ở trong form: ",
 	connectionError:				"Lỗi kết nối :(",
 	ajaxWattingMessage:				"Đang kiểm tra...",
 	requiredError:					"Không được để trống phần này",
