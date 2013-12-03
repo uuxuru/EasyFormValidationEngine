@@ -1,4 +1,4 @@
-﻿/*
+/*
 * easy Form Validation Engine
 * Version: 1.0.0
 *
@@ -20,7 +20,6 @@ $(document).ready(function () {
 			return;
 		var inputRegex = /\["[\w\W]+"\]/;
 		var formRegex = /\[\["[\w\W]+"\]\]/;
-
 		// Check if this ajax response is for easyValidate
 		// This is processor for a form submit
 		if (xhr.responseText.match(formRegex)) {
@@ -282,10 +281,8 @@ $(document).ready(function () {
 						//}
 					});
 					// Do after Submit functions
-					if (o.easyPrototype.doNotAutoSubmit!="true"){
 						for (var j = 0; j < i; j++)
 							afterSubmitFuncList[j](o);
-					}
 				} else {
 					easyMethods.scrollToFirstWrongInput(o);
 					return false;
