@@ -68,6 +68,3 @@ EasyFormValidationEngine
 	
  * How to use:
 	Please refer Example.html in localhost.
-
-
-That's all, thanks you for your reading :)
